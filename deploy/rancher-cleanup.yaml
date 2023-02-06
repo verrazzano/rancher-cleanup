@@ -30,9 +30,9 @@ spec:
     spec:
       containers:
       - name: cleanup
-        image: rancher/rancher-cleanup:latest
+        image: ghcr.io/verrazzano/rancher/rancher-cleanup:latest
         args: [ "force" ]
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       serviceAccountName: cleanup-service-account
       restartPolicy: Never
   backoffLimit: 4
