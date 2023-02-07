@@ -1,1 +1,9 @@
-TBD
+=== Public License Template ===
+
+------------------------------ Top-Level License -------------------------------
+
+
+---------------------------------- Copyright -----------------------------------
+(no copyrights found)
+=== ATTRIBUTION-HELPER-GENERATED:
+=== Attribution helper version: {Major:0 Minor:11 GitVersion:0.10.0-102-gd9a1a0a1 GitCommit:d9a1a0a141aea4c18363434b6aef258211712951 GitTreeState:clean BuildDate:2022-12-19T19:46:01Z GoVersion:go1.19.5 Compiler:gc Platform:darwin/amd64}
