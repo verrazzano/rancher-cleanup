@@ -126,25 +126,25 @@ if kubectl get validatingwebhookconfigurations -o name | grep -q rancher-monitor
     kcd "$(kubectl get validatingwebhookconfigurations -o name | grep rancher-monitoring)"
 fi
 # Delete any gatekeeper webhooks
-if kubectl get validatingwebhookconfigurations -o name | grep -q gatekeeper; then
-    kcd "$(kubectl get validatingwebhookconfigurations -o name | grep gatekeeper)"
-fi
+#if kubectl get validatingwebhookconfigurations -o name | grep -q gatekeeper; then
+#    kcd "$(kubectl get validatingwebhookconfigurations -o name | grep gatekeeper)"
+#fi
 
 # Delete any istio webhooks
-if kubectl get mutatingwebhookconfigurations -o name | grep -q istio;  then
-    kcd "$(kubectl get mutatingwebhookconfigurations -o name | grep istio)"
-fi
-if kubectl get validatingwebhookconfigurations -o name | grep -q istio; then
-    kcd "$(kubectl get validatingwebhookconfigurations -o name | grep istio)"
-fi
+#if kubectl get mutatingwebhookconfigurations -o name | grep -q istio;  then
+#    kcd "$(kubectl get mutatingwebhookconfigurations -o name | grep istio)"
+#fi
+#if kubectl get validatingwebhookconfigurations -o name | grep -q istio; then
+#    kcd "$(kubectl get validatingwebhookconfigurations -o name | grep istio)"
+#fi
 
 # Cluster api
-if [ -n "$(kubectl get validatingwebhookconfiguration.admissionregistration.k8s.io/validating-webhook-configuration)" ]; then
-    kcd validatingwebhookconfiguration.admissionregistration.k8s.io/validating-webhook-configuration
-fi
-if [ -n "$(kubectl get mutatingwebhookconfiguration.admissionregistration.k8s.io/mutating-webhook-configuration)" ]; then
-    kcd mutatingwebhookconfiguration.admissionregistration.k8s.io/mutating-webhook-configuration
-fi
+#if [ -n "$(kubectl get validatingwebhookconfiguration.admissionregistration.k8s.io/validating-webhook-configuration)" ]; then
+#    kcd validatingwebhookconfiguration.admissionregistration.k8s.io/validating-webhook-configuration
+#fi
+#if [ -n "$(kubectl get mutatingwebhookconfiguration.admissionregistration.k8s.io/mutating-webhook-configuration)" ]; then
+#    kcd mutatingwebhookconfiguration.admissionregistration.k8s.io/mutating-webhook-configuration
+#fi
 
 # Delete generic k8s resources either labeled with norman or resource name starting with "cattle|rancher|fleet"
 # ClusterRole/ClusterRoleBinding
@@ -178,20 +178,20 @@ kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.nam
   kcd "clusterrolebindings ""$CRB"""
 done
 
-kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CRB; do
-  kcpf clusterrolebindings "$CRB"
-  kcd "clusterrolebindings ""$CRB"""
-done
+#kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CRB; do
+#  kcpf clusterrolebindings "$CRB"
+#  kcd "clusterrolebindings ""$CRB"""
+#done
 
-kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^cis | while read -r CRB; do
-  kcpf clusterrolebindings "$CRB"
-  kcd "clusterrolebindings ""$CRB"""
-done
+#kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^cis | while read -r CRB; do
+#  kcpf clusterrolebindings "$CRB"
+#  kcd "clusterrolebindings ""$CRB"""
+#done
 
-kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^istio | while read -r CRB; do
-  kcpf clusterrolebindings "$CRB"
-  kcd "clusterrolebindings ""$CRB"""
-done
+#kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^istio | while read -r CRB; do
+#  kcpf clusterrolebindings "$CRB"
+#  kcd "clusterrolebindings ""$CRB"""
+#done
 
 kubectl  get clusterroles -l cattle.io/creator=norman --no-headers -o custom-columns=NAME:.metadata.name | while read -r CR; do
   kcpf clusterroles "$CR"
@@ -223,37 +223,37 @@ kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | gr
   kcd "clusterroles ""$CR"""
 done
 
-kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^logging- | while read -r CR; do
-  kcpf clusterroles "$CR"
-  kcd "clusterroles ""$CR"""
-done
+#kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^logging- | while read -r CR; do
+#  kcpf clusterroles "$CR"
+#  kcd "clusterroles ""$CR"""
+#done
 
-kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^monitoring- | while read -r CR; do
-  kcpf clusterroles "$CR"
-  kcd "clusterroles ""$CR"""
-done
+#kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^monitoring- | while read -r CR; do
+#  kcpf clusterroles "$CR"
+#  kcd "clusterroles ""$CR"""
+#done
 
-kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CR; do
-  kcpf clusterroles "$CR"
-  kcd "clusterroles ""$CR"""
-done
+#kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CR; do
+#  kcpf clusterroles "$CR"
+#  kcd "clusterroles ""$CR"""
+#done
 
-kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^cis | while read -r CR; do
-  kcpf clusterroles "$CR"
-  kcd "clusterroles ""$CR"""
-done
+#kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^cis | while read -r CR; do
+#  kcpf clusterroles "$CR"
+#  kcd "clusterroles ""$CR"""
+#done
 
-kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^istio | while read -r CR; do
-  kcpf clusterroles "$CR"
-  kcd "clusterroles ""$CR"""
-done
+#kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^istio | while read -r CR; do
+#  kcpf clusterroles "$CR"
+#  kcd "clusterroles ""$CR"""
+#done
 
 # Bulk delete data CRDs
 # Saves time in the loop below where we patch/delete individual resources
-DATACRDS="settings.management.cattle.io authconfigs.management.cattle.io features.management.cattle.io rkeaddons.management.cattle.io rkek8sserviceoptions.management.cattle.io rkek8ssystemimages.management.cattle.io catalogtemplateversions.management.cattle.io catalogtemplates.management.cattle.io rkeaddons.management.cattle.io"
-for CRD in $DATACRDS; do
-  kcd "crd $CRD"
-done
+#DATACRDS="settings.management.cattle.io authconfigs.management.cattle.io features.management.cattle.io rkeaddons.management.cattle.io rkek8sserviceoptions.management.cattle.io rkek8ssystemimages.management.cattle.io catalogtemplateversions.management.cattle.io catalogtemplates.management.cattle.io rkeaddons.management.cattle.io"
+#for CRD in $DATACRDS; do
+#  kcd "crd $CRD"
+#done
 
 # Delete apiservice
 for APISERVICE in $(kubectl  get apiservice -o name | grep cattle | grep -v k3s\.cattle\.io | grep -v helm\.cattle\.io) $(kubectl  get apiservice -o name | grep gatekeeper\.sh) $(kubectl  get apiservice -o name | grep istio\.io) apiservice\.apiregistration\.k8s\.io\/v1beta1\.custom\.metrics\.k8s\.io; do
@@ -282,9 +282,9 @@ for PSP in $(kubectl get podsecuritypolicy -o name -l app.kubernetes.io/name=ran
 done
 
 # Istio
-for PSP in istio-installer istio-psp kiali-psp psp-istio-cni; do
-  kcd "podsecuritypolicy $PSP"
-done
+#for PSP in istio-installer istio-psp kiali-psp psp-istio-cni; do
+#  kcd "podsecuritypolicy $PSP"
+#done
 
 # Get all namespaced resources and delete in loop
 # Exclude helm.cattle.io and k3s.cattle.io to not break K3S/RKE2 addons
@@ -294,33 +294,33 @@ kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| g
 done
 
 # Logging
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep logging\.banzaicloud\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep logging\.banzaicloud\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name | grep -v events\.events\.k8s\.io | grep -v ^events$ | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | grep rancher-monitoring | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name | grep -v events\.events\.k8s\.io | grep -v ^events$ | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | grep rancher-monitoring | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 
 # Monitoring
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep monitoring\.coreos\.com | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep monitoring\.coreos\.com | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 
 # Gatekeeper
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep gatekeeper\.sh | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep gatekeeper\.sh | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 
 # Cluster-api
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cluster\.x-k8s\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cluster\.x-k8s\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 
 # Get all non-namespaced resources and delete in loop
 kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep cattle\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
@@ -329,21 +329,21 @@ kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| 
 done
 
 # Logging
-kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep logging\.banzaicloud\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
-  kcpf "$NAME"
-  kcd "$NAME"
-done
+#kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep logging\.banzaicloud\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
+#  kcpf "$NAME"
+#  kcd "$NAME"
+#done
 
 # Gatekeeper
-kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep gatekeeper\.sh | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
-  kcpf "$NAME"
-  kcd "$NAME"
-done
+#kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep gatekeeper\.sh | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
+#  kcpf "$NAME"
+#  kcd "$NAME"
+#done
 
 # Delete istio certs
-for NS in $(kubectl  get ns --no-headers -o custom-columns=NAME:.metadata.name); do
-  kcd "-n ${NS} configmap istio-ca-root-cert"
-done
+#for NS in $(kubectl  get ns --no-headers -o custom-columns=NAME:.metadata.name); do
+#  kcd "-n ${NS} configmap istio-ca-root-cert"
+#done
 
 # Delete all cattle namespaces, including project namespaces (p-),cluster (c-),cluster-fleet and user (user-) namespaces
 for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
@@ -401,9 +401,9 @@ for NS in $(kubectl get namespace --no-headers -o custom-columns=NAME:.metadata.
 done
 
 # Delete logging CRDs
-for CRD in $(kubectl get crd -o name | grep logging\.banzaicloud\.io); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep logging\.banzaicloud\.io); do
+#  kcd "$CRD"
+#done
 
 # Delete monitoring CRDs
 #for CRD in $(kubectl get crd -o name | grep monitoring\.coreos\.com); do
@@ -411,9 +411,9 @@ done
 #done
 
 # Delete OPA CRDs
-for CRD in $(kubectl get crd -o name | grep gatekeeper\.sh); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep gatekeeper\.sh); do
+#  kcd "$CRD"
+#done
 
 # Delete Istio CRDs
 #for CRD in $(kubectl get crd -o name | grep istio\.io); do
@@ -421,12 +421,12 @@ done
 #done
 
 # Delete cluster-api CRDs
-for CRD in $(kubectl get crd -o name | grep cluster\.x-k8s\.io); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep cluster\.x-k8s\.io); do
+#  kcd "$CRD"
+#done
 
 # Delete all cattle CRDs
 # Exclude helm.cattle.io and addons.k3s.cattle.io to not break RKE2 addons
-for CRD in $(kubectl get crd -o name | grep cattle\.io | grep -v helm\.cattle\.io | grep -v k3s\.cattle\.io); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep cattle\.io | grep -v helm\.cattle\.io | grep -v k3s\.cattle\.io); do
+#  kcd "$CRD"
+#done
