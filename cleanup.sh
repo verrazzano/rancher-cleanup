@@ -406,9 +406,9 @@ for CRD in $(kubectl get crd -o name | grep logging\.banzaicloud\.io); do
 done
 
 # Delete monitoring CRDs
-for CRD in $(kubectl get crd -o name | grep monitoring\.coreos\.com); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep monitoring\.coreos\.com); do
+#  kcd "$CRD"
+#done
 
 # Delete OPA CRDs
 for CRD in $(kubectl get crd -o name | grep gatekeeper\.sh); do
@@ -416,9 +416,9 @@ for CRD in $(kubectl get crd -o name | grep gatekeeper\.sh); do
 done
 
 # Delete Istio CRDs
-for CRD in $(kubectl get crd -o name | grep istio\.io); do
-  kcd "$CRD"
-done
+#for CRD in $(kubectl get crd -o name | grep istio\.io); do
+#  kcd "$CRD"
+#done
 
 # Delete cluster-api CRDs
 for CRD in $(kubectl get crd -o name | grep cluster\.x-k8s\.io); do
