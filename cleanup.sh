@@ -101,7 +101,7 @@ fi
 set -x
 # Namespaces with resources that probably have finalizers/dependencies (needs manual traverse to patch and delete else it will hang)
 CATTLE_NAMESPACES="local cattle-system cattle-impersonation-system cattle-global-data cattle-global-nt"
-TOOLS_NAMESPACES="istio-system cattle-resources-system cis-operator-system cattle-dashboards cattle-gatekeeper-system cattle-alerting cattle-logging cattle-pipeline cattle-prometheus rancher-operator-system cattle-monitoring-system cattle-logging-system"
+TOOLS_NAMESPACES="cattle-resources-system cis-operator-system cattle-dashboards cattle-gatekeeper-system cattle-alerting cattle-logging cattle-pipeline cattle-prometheus rancher-operator-system cattle-monitoring-system cattle-logging-system"
 FLEET_NAMESPACES="cattle-fleet-clusters-system cattle-fleet-local-system cattle-fleet-system fleet-default fleet-local fleet-system"
 
 # Delete rancher install to not have anything running that (re)creates resources
