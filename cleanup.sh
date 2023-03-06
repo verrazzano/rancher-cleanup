@@ -72,13 +72,13 @@ kcpf()
 kcdns()
 {
   if kubectl get namespace "$1"; then
-    kcpf namespace "$1"
-    FINALIZERS=$(kubectl get -o jsonpath="{.spec.finalizers}" namespace "$1")
-    if [ "x${FINALIZERS}" != "x" ]; then
-        echo "Finalizers before for namespace ${1}: ${FINALIZERS}"
-        kubectl get -o json namespace "$1" | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$1/finalize -f -
-        echo "Finalizers after for namespace ${1}: $(kubectl get -o jsonpath="{.spec.finalizers}" namespace ${1})"
-    fi
+#    kcpf namespace "$1"
+#    FINALIZERS=$(kubectl get -o jsonpath="{.spec.finalizers}" namespace "$1")
+#    if [ "x${FINALIZERS}" != "x" ]; then
+#        echo "Finalizers before for namespace ${1}: ${FINALIZERS}"
+#        kubectl get -o json namespace "$1" | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$1/finalize -f -
+#        echo "Finalizers after for namespace ${1}: $(kubectl get -o jsonpath="{.spec.finalizers}" namespace ${1})"
+#    fi
     i="0"
     while [ $i -lt 4 ]; do
         if timeout 21 sh -c 'kubectl delete --ignore-not-found=true --grace-period=15 --timeout=20s namespace '"$1"''; then
@@ -352,14 +352,14 @@ for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
     #kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
   #done
 
-  kubectl delete namespace "$NS"
+  kcdns "$NS"
 done
 
 for NS in $(kubectl get namespace --no-headers -o custom-columns=NAME:.metadata.name | grep "^cluster-fleet"); do
-  kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep -v events\.events\.k8s\.io | grep -v ^events$ | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-    kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-    kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-  done
+  #kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep -v events\.events\.k8s\.io | grep -v ^events$ | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+  #  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+  #  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+  #done
 
   kcdns "$NS"
 done
