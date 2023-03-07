@@ -312,10 +312,10 @@ ts "End delete monitoring"
 # Get all namespaced resources and delete in loop
 # Exclude helm.cattle.io and k3s.cattle.io to not break K3S/RKE2 addons
 ts "Begin delete all namespaced resources"
-kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep -v helm\.cattle\.io | grep -v k3s\.cattle\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
-done
+#kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep -v helm\.cattle\.io | grep -v k3s\.cattle\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+#  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+#  kcd "-n ""$NAMESPACE"" ${KIND}.$(printapiversion "$APIVERSION") ""$NAME"""
+#done
 ts "End delete all namespaced resources"
 
 # Logging
