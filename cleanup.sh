@@ -324,7 +324,7 @@ done
 
 # Get all non-namespaced resources and delete in loop
 kubectl get "$(kubectl api-resources --namespaced=false --verbs=delete -o name| grep cattle\.io | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o name | while read -r NAME; do
-  kcpf "$NAME"
+  #kcpf "$NAME"
   kcd "$NAME"
 done
 
