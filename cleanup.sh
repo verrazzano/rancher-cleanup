@@ -72,13 +72,13 @@ kcpf()
 kcdns()
 {
   if kubectl get namespace "$1"; then
-    kcpf namespace "$1"
-    FINALIZERS=$(kubectl get -o jsonpath="{.spec.finalizers}" namespace "$1")
-    if [ "x${FINALIZERS}" != "x" ]; then
-        echo "Finalizers before for namespace ${1}: ${FINALIZERS}"
-        kubectl get -o json namespace "$1" | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$1/finalize -f -
-        echo "Finalizers after for namespace ${1}: $(kubectl get -o jsonpath="{.spec.finalizers}" namespace ${1})"
-    fi
+#    kcpf namespace "$1"
+#    FINALIZERS=$(kubectl get -o jsonpath="{.spec.finalizers}" namespace "$1")
+#    if [ "x${FINALIZERS}" != "x" ]; then
+#        echo "Finalizers before for namespace ${1}: ${FINALIZERS}"
+#        kubectl get -o json namespace "$1" | tr -d "\n" | sed "s/\"finalizers\": \[[^]]\+\]/\"finalizers\": []/"   | kubectl replace --raw /api/v1/namespaces/$1/finalize -f -
+#        echo "Finalizers after for namespace ${1}: $(kubectl get -o jsonpath="{.spec.finalizers}" namespace ${1})"
+#    fi
     i="0"
     while [ $i -lt 4 ]; do
         if timeout 21 sh -c 'kubectl delete --ignore-not-found=true --grace-period=15 --timeout=20s namespace '"$1"''; then
