@@ -178,6 +178,11 @@ kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.nam
   kcd "clusterrolebindings ""$CRB"""
 done
 
+kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^helm-operation | while read -r CRB; do
+  kcpf clusterrolebindings "$CRB"
+  kcd "clusterrolebindings ""$CRB"""
+done
+
 #kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CRB; do
 #  kcpf clusterrolebindings "$CRB"
 #  kcd "clusterrolebindings ""$CRB"""
@@ -221,6 +226,11 @@ done
 kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^pod-impersonation-helm | while read -r CR; do
   kcpf clusterroles "$CR"
   kcd "clusterroles ""$CR"""
+done
+
+kubectl get roles --no-headers -o custom-columns=NAME:.metadata.name -n cattle-system | grep ^helm-operation | while read -r CR; do
+  kcpf roles "$CR"
+  kcd "roles ""$CR"""
 done
 
 #kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^logging- | while read -r CR; do
