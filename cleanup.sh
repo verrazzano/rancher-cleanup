@@ -355,6 +355,19 @@ done
 #  kcd "-n ${NS} configmap istio-ca-root-cert"
 #done
 
+# remove finalizers from existing Rancher nodes and projects
+for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
+  kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^projects\.management | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+    kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+  done
+done
+
+for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
+  kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^nodes\.management | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+    kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+  done
+done
+
 # Delete all cattle namespaces, including project namespaces (p-),cluster (c-),cluster-fleet and user (user-) namespaces
 for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
   #kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep -v events\.events\.k8s\.io | grep -v ^events$ | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
@@ -363,17 +376,6 @@ for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
   #done
 
   kcdns "$NS"
-done
-
-# remove finalizers from existing Rancher nodes and projects
-for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
-  kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^projects\.management | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-    kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  done
-
-  kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^nodes\.management | tr "\n" "," | sed -e 's/,$//')" -n "$NS" --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
-    kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
-  done
 done
 
 for NS in $(kubectl get namespace --no-headers -o custom-columns=NAME:.metadata.name | grep "^cluster-fleet"); do
