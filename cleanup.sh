@@ -178,6 +178,11 @@ kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.nam
   kcd "clusterrolebindings ""$CRB"""
 done
 
+kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^helm-operation | while read -r CRB; do
+  kcpf clusterrolebindings "$CRB"
+  kcd "clusterrolebindings ""$CRB"""
+done
+
 #kubectl get clusterrolebinding --no-headers -o custom-columns=NAME:.metadata.name | grep ^gatekeeper | while read -r CRB; do
 #  kcpf clusterrolebindings "$CRB"
 #  kcd "clusterrolebindings ""$CRB"""
@@ -221,6 +226,11 @@ done
 kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^pod-impersonation-helm | while read -r CR; do
   kcpf clusterroles "$CR"
   kcd "clusterroles ""$CR"""
+done
+
+kubectl get roles --no-headers -o custom-columns=NAME:.metadata.name -n cattle-system | grep ^helm-operation | while read -r CR; do
+  kcpf roles "$CR"
+  kcd "roles ""$CR"""
 done
 
 #kubectl get clusterroles --no-headers -o custom-columns=NAME:.metadata.name | grep ^logging- | while read -r CR; do
@@ -344,6 +354,15 @@ done
 #for NS in $(kubectl  get ns --no-headers -o custom-columns=NAME:.metadata.name); do
 #  kcd "-n ${NS} configmap istio-ca-root-cert"
 #done
+
+# remove finalizers from existing Rancher nodes and projects
+kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^projects\.management | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+done
+
+kubectl get "$(kubectl api-resources --namespaced=true --verbs=delete -o name| grep cattle\.io | grep ^nodes\.management | tr "\n" "," | sed -e 's/,$//')" -A --no-headers -o custom-columns=NAME:.metadata.name,NAMESPACE:.metadata.namespace,KIND:.kind,APIVERSION:.apiVersion | while read -r NAME NAMESPACE KIND APIVERSION; do
+  kcpf -n "$NAMESPACE" "${KIND}.$(printapiversion "$APIVERSION")" "$NAME"
+done
 
 # Delete all cattle namespaces, including project namespaces (p-),cluster (c-),cluster-fleet and user (user-) namespaces
 for NS in $TOOLS_NAMESPACES $FLEET_NAMESPACES $CATTLE_NAMESPACES; do
